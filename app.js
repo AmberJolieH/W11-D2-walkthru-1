@@ -1,23 +1,30 @@
-
+//required
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-
+const session = require('express-session');
 const { environment } = require('./config');
 const indexRoutes = require('./routes');
 const parkRoutes = require('./routes/park');
 const attractionRoutes = require('./routes/attraction');
-
+const { v4: uuidv4 } = require('uuid');
+uuidv4();
+//app setup
 const app = express();
-
 app.set('view engine', 'pug');
 
+//middleware
 app.use(morgan('dev'));
-app.use(cookieParser());
+app.use(cookieParser(sessionSecret));
 app.use(express.urlencoded({ extended: false }));
 app.use(indexRoutes);
 app.use(parkRoutes);
 app.use(attractionRoutes);
+app.use(session({
+  secret: '9fe743f5-d2bc-46fa-8acd-5e04cd76698c',
+  resave: false, //when using default set to false
+  saveUninitialized: false,//when using default set to false
+}));
 
 // Catch unhandled requests and forward to error handler.
 app.use((req, res, next) => {
