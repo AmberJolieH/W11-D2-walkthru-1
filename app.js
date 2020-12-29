@@ -7,6 +7,7 @@ const { environment } = require('./config');
 const indexRoutes = require('./routes');
 const parkRoutes = require('./routes/park');
 const attractionRoutes = require('./routes/attraction');
+const userRegister = require('./routes/user')
 const { v4: uuidv4 } = require('uuid');
 uuidv4();
 //app setup
@@ -15,11 +16,12 @@ app.set('view engine', 'pug');
 
 //middleware
 app.use(morgan('dev'));
-app.use(cookieParser(sessionSecret));
+app.use(cookieParser('9fe743f5-d2bc-46fa-8acd-5e04cd76698c'));
 app.use(express.urlencoded({ extended: false }));
 app.use(indexRoutes);
 app.use(parkRoutes);
 app.use(attractionRoutes);
+app.use(userRegister)
 app.use(session({
   secret: '9fe743f5-d2bc-46fa-8acd-5e04cd76698c',
   resave: false, //when using default set to false
